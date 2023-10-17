@@ -29,6 +29,15 @@
         ));
         // Afficher un message de confirmation
     }
+
+    // pour suprimer de la base de donées 
+    if(isset($_POST['id_a_supprimer'])){ 
+        $id_a_suprimer = $_POST['id_a_supprimer']; 
+        $deleteQuery = $bdd->prepare("DELETE FROM etudiant WHERE id = :id");
+        $deleteQuery->execute(array('id' => $id_a_suprimer));
+        echo " supression sucées "; 
+    }
+
     $etudiants = $bdd->query('SELECT * FROM etudiant');
     ?>
      <div class="container mt-5">
@@ -64,6 +73,8 @@
                             <th scope="col">Nom</th>
                             <th scope="col">Âge</th>
                             <th scope="col">Matricule</th>
+                            <th scope="col">Suprimé</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +84,13 @@
                                 <td><?php echo $etudiant['nomPrenom']; ?></td>
                                 <td><?php echo $etudiant['age']; ?></td>
                                 <td><?php echo $etudiant['id']; ?></td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        <input type="hidden" name="id_a_supprimer" value="<?php echo $etudiant['id']; ?>">
+                                        <button type="submit" name="supprimer" class="btn btn-danger">Supprimer</button>
+                                    </form> 
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
